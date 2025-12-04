@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Compound Interest Calculator (Canada) – Wealth Wizard Canada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Free Canadian compound interest calculator from Wealth Wizard Canada. Estimate how your savings can grow over time in CAD with monthly contributions, compounding, and inflation." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+  <meta name="theme-color" content="#b91c1c" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5L9RY4DF3P"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5L9RY4DF3P');
+</script>
+  <style>
+    :root {
+      --bg: #fef2f2;         /* soft red background */
+      --card-bg: #ffffff;
+      --primary: #b91c1c;    /* red */
+      --primary-dark: #991b1b;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border: #fee2e2;
+      --danger: #b91c1c;
+      --success: #16a34a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    h1, h2 {
+      margin: 0 0 12px;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0 0 8px;
+    }
+
+    .header {
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      color: #b91c1c;
+      margin-bottom: 4px;
+    }
+
+    .tagline {
+      color: var(--text-muted);
+      margin-top: 4px;
+      max-width: 640px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      text-decoration: none;
+      color: var(--primary);
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #fee2e2;
+      color: #7f1d1d;
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      border: 1px solid #fecaca;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .grid-main {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 900px) {
+      .grid-main {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 600px) {
+      .grid-two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .field-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+      outline: none;
+      background: #fff;
+    }
+
+    input[type="number"]:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.15);
+    }
+
+    .section-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #991b1b;
+      margin: 12px 0 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s ease;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .results {
+      display: none;
+    }
+
+    .results.visible {
+      display: block;
+    }
+
+    .results-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    @media (min-width: 600px) {
+      .results-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .stat {
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      background: #fef9f9;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .stat-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .stat-highlight {
+      border-left: 4px solid var(--primary);
+      background: #fef2f2;
+    }
+
+    .stat-success {
+      border-left: 4px solid var(--success);
+      background: #ecfdf3;
+    }
+
+    .stat-subtle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .error {
+      color: var(--danger);
+      font-size: 0.85rem;
+      margin-top: 6px;
+    }
+
+    .seo {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <a href="/" class="back-link">← Back to Wealth Wizard Canada</a>
+      <div class="brand">Wealth Wizard Canada</div>
+      <div class="pill">Canadian Savings Tool</div>
+      <h1>Compound Interest Calculator (Canada)</h1>
+      <p class="tagline">
+        Estimate how your savings could grow over time in Canadian dollars (CAD). Enter an initial amount,
+        monthly contributions, an interest rate, and a time frame to see the power of compound interest with
+        optional inflation adjustment.
+      </p>
+    </header>
+
+    <div class="grid-main">
+      <!-- LEFT: Form -->
+      <section class="card">
+        <h2>Enter your savings scenario</h2>
+        <div id="error" class="error" aria-live="polite"></div>
+
+        <div class="field-group">
+          <label for="province">Province or territory (for context)</label>
+          <select id="province">
+            <option value="Ontario" selected>Ontario</option>
+            <option value="Alberta">Alberta</option>
+            <option value="British Columbia">British Columbia</option>
+            <option value="Manitoba">Manitoba</option>
+            <option value="New Brunswick">New Brunswick</option>
+            <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+            <option value="Nova Scotia">Nova Scotia</option>
+            <option value="Prince Edward Island">Prince Edward Island</option>
+            <option value="Quebec">Quebec</option>
+            <option value="Saskatchewan">Saskatchewan</option>
+            <option value="Northwest Territories">Northwest Territories</option>
+            <option value="Nunavut">Nunavut</option>
+            <option value="Yukon">Yukon</option>
+          </select>
+          <div class="hint">Compound interest math is the same across Canada; tax treatment can differ by province.</div>
+        </div>
+
+        <div class="section-label">Starting point (CAD)</div>
+        <div class="grid-two">
+          <div class="field-group">
+            <label for="initialAmount">Initial amount</label>
+            <input type="number" id="initialAmount" min="0" value="5000" step="100" />
+          </div>
+          <div class="field-group">
+            <label for="monthlyContribution">Monthly contribution</label>
+            <input type="number" id="monthlyContribution" min="0" value="250" step="25" />
+            <div class="hint">Optional. Set to 0 if you’re not adding regularly.</div>
+          </div>
+        </div>
+
+        <div class="section-label">Time & growth assumptions</div>
+        <div class="grid-two">
+          <div class="field-group">
+            <label for="years">Years to grow</label>
+            <input type="number" id="years" min="1" max="60" value="20" />
+          </div>
+          <div class="field-group">
+            <label for="annualReturn">Expected annual return (%)</label>
+            <input type="number" id="annualReturn" min="0" max="20" value="6" step="0.1" />
+            <div class="hint">Example: 5–7% for a diversified long-term portfolio.</div>
+          </div>
+        </div>
+
+        <div class="grid-two">
+          <div class="field-group">
+            <label for="compounding">Compounding frequency</label>
+            <select id="compounding">
+              <option value="1">Annually</option>
+              <option value="2">Semi-annually</option>
+              <option value="4">Quarterly</option>
+              <option value="12" selected>Monthly</option>
+            </select>
+            <div class="hint">Most Canadian savings and investment products compound at least annually.</div>
+          </div>
+          <div class="field-group">
+            <label for="inflationRate">Estimated annual inflation (%)</label>
+            <input type="number" id="inflationRate" min="0" max="10" value="2" step="0.1" />
+            <div class="hint">We’ll show your future balance in today’s dollars using this rate.</div>
+          </div>
+        </div>
+
+        <button id="calculateBtn" class="btn">Calculate compound growth</button>
+      </section>
+
+      <!-- RIGHT: Results -->
+      <section class="card">
+        <h2>Your compound interest results</h2>
+        <div id="results" class="results">
+          <div class="results-grid">
+            <div class="stat">
+              <div class="stat-label">Province or territory</div>
+              <div class="stat-value" id="provinceSummary"></div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Time horizon</div>
+              <div class="stat-value" id="timeHorizon"></div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Total contributions (initial + monthly)</div>
+              <div class="stat-value" id="totalContributions"></div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Total investment growth</div>
+              <div class="stat-value" id="totalGrowth"></div>
+            </div>
+
+            <div class="stat stat-highlight">
+              <div class="stat-label">Estimated future value (CAD, before inflation)</div>
+              <div class="stat-value" id="futureValue"></div>
+            </div>
+
+            <div class="stat stat-success">
+              <div class="stat-label">Estimated value in today's dollars</div>
+              <div class="stat-value" id="realValue"></div>
+              <div class="stat-subtle" id="inflationNote"></div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Approx. effective annual growth (nominal)</div>
+              <div class="stat-value" id="effectiveRate"></div>
+              <div class="stat-subtle">
+                Based on compound growth over the full period, ignoring inflation.
+              </div>
+            </div>
+          </div>
+
+          <p class="seo">
+            This calculator shows how compound interest can grow your savings over time in Canadian dollars.
+            It assumes a constant rate of return and regular monthly contributions. Real-world investment
+            results will vary and may be higher or lower than shown here.
+          </p>
+        </div>
+
+        <div id="placeholderText" class="seo">
+          Enter your starting amount, monthly contribution, interest rate, and time frame on the left, then
+          select <strong>Calculate compound growth</strong> to see an estimate of your future balance in CAD,
+          along with an inflation-adjusted view in today’s dollars.
+        </div>
+      </section>
+    </div>
+
+    <!-- SEO text block -->
+    <section class="card">
+      <h2>About this Canadian compound interest calculator</h2>
+      <p class="seo">
+        The Wealth Wizard Canada compound interest calculator is designed for Canadians who want to see how
+        their savings might grow inside accounts like TFSAs, RRSPs, or non-registered investment accounts.
+        While tax treatment is different across account types and provinces, the underlying compound interest
+        math is the same, and this tool focuses on growth in Canadian dollars before tax.
+      </p>
+      <p class="seo">
+        The calculator uses an annual rate of return, converts it into a compounding frequency (such as annual
+        or monthly), and then applies that to both your initial amount and ongoing monthly contributions over
+        the number of years you choose. It also offers an inflation adjustment so you can see your future
+        savings expressed in today’s purchasing power. Because future returns and inflation are uncertain,
+        treat these numbers as rough illustrations rather than guarantees. For personalized advice, speak with
+        a licensed financial professional in your province or territory.
+      </p>
+    </section>
+  </div>
+
+  <script>
+    function formatCurrency(value) {
+      if (isNaN(value)) return "$0";
+      return value.toLocaleString("en-CA", {
+        style: "currency",
+        currency: "CAD",
+        maximumFractionDigits: 0
+      });
+    }
+
+    function calculateEffectiveMonthlyRate(annualReturnPercent, compPerYear) {
+      const rAnnual = annualReturnPercent / 100;
+      if (rAnnual === 0 || compPerYear <= 0) return 0;
+      const periodicRate = rAnnual / compPerYear;
+      // convert that periodic rate into an effective monthly rate
+      const monthlyRate = Math.pow(1 + periodicRate, compPerYear / 12) - 1;
+      return monthlyRate;
+    }
+
+    function futureValueWithContributions(current, monthly, months, monthlyRate) {
+      if (months <= 0) return current || 0;
+      if (!monthlyRate || monthlyRate === 0) {
+        return (current || 0) + (monthly || 0) * months;
+      }
+      const growthFactor = Math.pow(1 + monthlyRate, months);
+      const futureCurrent = (current || 0) * growthFactor;
+      const futureContrib = (monthly || 0) * ((growthFactor - 1) / monthlyRate);
+      return futureCurrent + futureContrib;
+    }
+
+    document.getElementById("calculateBtn").addEventListener("click", function () {
+      const province = document.getElementById("province").value;
+
+      const initialAmount = parseFloat(document.getElementById("initialAmount").value);
+      const monthlyContribution = parseFloat(document.getElementById("monthlyContribution").value);
+      const years = parseFloat(document.getElementById("years").value);
+      const annualReturn = parseFloat(document.getElementById("annualReturn").value);
+      const compPerYear = parseInt(document.getElementById("compounding").value, 10);
+      const inflationRate = parseFloat(document.getElementById("inflationRate").value);
+
+      const errorEl = document.getElementById("error");
+      const resultsEl = document.getElementById("results");
+      const placeholderEl = document.getElementById("placeholderText");
+
+      errorEl.textContent = "";
+      resultsEl.classList.remove("visible");
+
+      if (
+        isNaN(initialAmount) ||
+        isNaN(monthlyContribution) ||
+        isNaN(years) ||
+        isNaN(annualReturn) ||
+        isNaN(inflationRate)
+      ) {
+        errorEl.textContent = "Please fill in all fields with valid numbers.";
+        return;
+      }
+
+      if (years <= 0) {
+        errorEl.textContent = "Years to grow should be at least 1.";
+        return;
+      }
+
+      if (annualReturn < 0) {
+        errorEl.textContent = "Annual return cannot be negative.";
+        return;
+      }
+
+      const months = years * 12;
+      const monthlyRate = calculateEffectiveMonthlyRate(annualReturn, compPerYear);
+
+      const futureValue = futureValueWithContributions(
+        initialAmount,
+        monthlyContribution,
+        months,
+        monthlyRate
+      );
+
+      const totalContributions =
+        (initialAmount || 0) + (monthlyContribution || 0) * months;
+
+      const totalGrowth = futureValue - totalContributions;
+
+      // Inflation adjustment
+      let realValue = futureValue;
+      let inflationText = "";
+      if (inflationRate > 0) {
+        const inflationFactor = Math.pow(1 + inflationRate / 100, years);
+        realValue = futureValue / inflationFactor;
+        inflationText =
+          "Inflation-adjusted using " +
+          inflationRate.toFixed(1) +
+          "% per year over " +
+          years.toFixed(1) +
+          " years.";
+      } else {
+        inflationText = "No inflation adjustment applied.";
+      }
+
+      // Approximate effective annual growth (based on total vs contributions)
+      let effectiveRateText = "N/A";
+      if (totalContributions > 0 && futureValue > 0) {
+        // Very rough: treat contributions like they were all invested from day 1
+        const approxRate =
+          Math.pow(futureValue / totalContributions, 1 / years) - 1;
+        if (isFinite(approxRate) && approxRate >= 0) {
+          effectiveRateText = (approxRate * 100).toFixed(2) + "% per year";
+        }
+      }
+
+      // Populate UI
+      document.getElementById("provinceSummary").textContent = province;
+      document.getElementById("timeHorizon").textContent =
+        years.toString() + " years";
+
+      document.getElementById("totalContributions").textContent =
+        formatCurrency(totalContributions);
+      document.getElementById("totalGrowth").textContent =
+        formatCurrency(totalGrowth);
+
+      document.getElementById("futureValue").textContent =
+        formatCurrency(futureValue);
+      document.getElementById("realValue").textContent =
+        formatCurrency(realValue);
+      document.getElementById("inflationNote").textContent = inflationText;
+
+      document.getElementById("effectiveRate").textContent = effectiveRateText;
+
+      // Show results
+      placeholderEl.style.display = "none";
+      resultsEl.classList.add("visible");
+    });
+  </script>
+</body>
+</html>

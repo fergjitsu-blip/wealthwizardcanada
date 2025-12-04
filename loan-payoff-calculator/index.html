@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Loan & Debt Payoff Calculator (Canada) – Wealth Wizard Canada</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Free Canadian loan and debt payoff calculator from Wealth Wizard Canada. Estimate how long it will take to pay off a credit card, car loan, or personal loan in CAD, and see total interest paid." />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+  <meta name="theme-color" content="#b91c1c" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5L9RY4DF3P"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-5L9RY4DF3P');
+</script>
+  <style>
+    :root {
+      --bg: #fef2f2;         /* soft red background */
+      --card-bg: #ffffff;
+      --primary: #b91c1c;    /* red */
+      --primary-dark: #991b1b;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border: #fee2e2;
+      --danger: #b91c1c;
+      --success: #16a34a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    h1, h2 {
+      margin: 0 0 12px;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0 0 8px;
+    }
+
+    .header {
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      color: #b91c1c;
+      margin-bottom: 4px;
+    }
+
+    .tagline {
+      color: var(--text-muted);
+      margin-top: 4px;
+      max-width: 640px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      text-decoration: none;
+      color: var(--primary);
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #fee2e2;
+      color: #7f1d1d;
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      border: 1px solid #fecaca;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+
+    .grid-main {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 900px) {
+      .grid-main {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    @media (min-width: 600px) {
+      .grid-two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .field-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 0.95rem;
+      outline: none;
+      background: #fff;
+    }
+
+    input[type="number"]:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.15);
+    }
+
+    .section-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #991b1b;
+      margin: 12px 0 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s ease;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .results {
+      display: none;
+    }
+
+    .results.visible {
+      display: block;
+    }
+
+    .results-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    @media (min-width: 600px) {
+      .results-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .stat {
+      border-radius: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      background: #fef9f9;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .stat-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .stat-highlight {
+      border-left: 4px solid var(--primary);
+      background: #fef2f2;
+    }
+
+    .stat-success {
+      border-left: 4px solid var(--success);
+      background: #ecfdf3;
+    }
+
+    .stat-subtle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .error {
+      color: var(--danger);
+      font-size: 0.85rem;
+      margin-top: 6px;
+    }
+
+    .seo {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <a href="/" class="back-link">← Back to Wealth Wizard Canada</a>
+      <div class="brand">Wealth Wizard Canada</div>
+      <div class="pill">Canadian Debt Tool</div>
+      <h1>Loan & Debt Payoff Calculator (Canada)</h1>
+      <p class="tagline">
+        Estimate how long it will take to pay off a credit card, car loan, personal loan, or other debt in
+        Canadian dollars (CAD). Enter your balance, interest rate, and monthly payment to see a payoff
+        timeline and total interest, with an option to compare extra payments.
+      </p>
+    </header>
+
+    <div class="grid-main">
+      <!-- LEFT: Form -->
+      <section class="card">
+        <h2>Enter your loan or debt details</h2>
+        <div id="error" class="error" aria-live="polite"></div>
+
+        <div class="grid-two">
+          <div class="field-group">
+            <label for="province">Province or territory</label>
+            <select id="province">
+              <option value="Ontario" selected>Ontario</option>
+              <option value="Alberta">Alberta</option>
+              <option value="British Columbia">British Columbia</option>
+              <option value="Manitoba">Manitoba</option>
+              <option value="New Brunswick">New Brunswick</option>
+              <option value="Newfoundland and Labrador">Newfoundland and Labrador</option>
+              <option value="Nova Scotia">Nova Scotia</option>
+              <option value="Prince Edward Island">Prince Edward Island</option>
+              <option value="Quebec">Quebec</option>
+              <option value="Saskatchewan">Saskatchewan</option>
+              <option value="Northwest Territories">Northwest Territories</option>
+              <option value="Nunavut">Nunavut</option>
+              <option value="Yukon">Yukon</option>
+            </select>
+            <div class="hint">Interest rules and protections can differ by province.</div>
+          </div>
+
+          <div class="field-group">
+            <label for="loanType">Loan or debt type</label>
+            <select id="loanType">
+              <option value="Credit card">Credit card</option>
+              <option value="Personal loan">Personal loan</option>
+              <option value="Car / auto loan">Car / auto loan</option>
+              <option value="Line of credit">Line of credit</option>
+              <option value="Student loan">Student loan</option>
+              <option value="Other" selected>Other / general debt</option>
+            </select>
+            <div class="hint">For your own reference in the results summary.</div>
+          </div>
+        </div>
+
+        <div class="section-label">Loan balance & interest (CAD)</div>
+        <div class="grid-two">
+          <div class="field-group">
+            <label for="balance">Current balance</label>
+            <input type="number" id="balance" min="0" value="10000" step="100" />
+          </div>
+          <div class="field-group">
+            <label for="annualRate">Annual interest rate (%)</label>
+            <input type="number" id="annualRate" min="0" max="40" value="19.99" step="0.01" />
+            <div class="hint">For example, many credit cards are around 19.99% APR.</div>
+          </div>
+        </div>
+
+        <div class="section-label">Monthly payments (CAD)</div>
+        <div class="grid-two">
+          <div class="field-group">
+            <label for="monthlyPayment">Planned monthly payment</label>
+            <input type="number" id="monthlyPayment" min="0" value="300" step="10" />
+            <div class="hint">The amount you commit to paying every month.</div>
+          </div>
+          <div class="field-group">
+            <label for="extraPayment">Extra monthly payment (optional)</label>
+            <input type="number" id="extraPayment" min="0" value="0" step="10" />
+            <div class="hint">Extra you add on top of your regular payment to pay it off faster.</div>
+          </div>
+        </div>
+
+        <button id="calculateBtn" class="btn">Calculate payoff timeline</button>
+      </section>
+
+      <!-- RIGHT: Results -->
+      <section class="card">
+        <h2>Your payoff summary</h2>
+        <div id="results" class="results">
+          <div class="results-grid">
+            <div class="stat">
+              <div class="stat-label">Province / territory</div>
+              <div class="stat-value" id="provinceSummary"></div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Loan / debt type</div>
+              <div class="stat-value" id="loanTypeSummary"></div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Time to pay off</div>
+              <div class="stat-value" id="timeToPayoff"></div>
+              <div class="stat-subtle" id="numPayments"></div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Estimated payoff date</div>
+              <div class="stat-value" id="payoffDate"></div>
+            </div>
+
+            <div class="stat stat-highlight">
+              <div class="stat-label">Total paid over life of loan</div>
+              <div class="stat-value" id="totalPaid"></div>
+              <div class="stat-subtle" id="principalVsInterest"></div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-label">Total interest paid</div>
+              <div class="stat-value" id="totalInterest"></div>
+              <div class="stat-subtle" id="interestPercent"></div>
+            </div>
+
+            <div class="stat stat-success">
+              <div class="stat-label">Impact of extra payments</div>
+              <div class="stat-value" id="extraSummary"></div>
+              <div class="stat-subtle" id="extraDetail"></div>
+            </div>
+          </div>
+
+          <p class="seo">
+            This calculator uses your balance, interest rate, and monthly payment to simulate a payoff schedule
+            month by month. It estimates how long it could take to become debt-free and how much interest you
+            might pay in total, based on your inputs.
+          </p>
+        </div>
+
+        <div id="placeholderText" class="seo">
+          Enter your loan or debt information on the left, including your current balance, interest rate, and
+          monthly payment. Then select <strong>Calculate payoff timeline</strong> to see an estimated payoff
+          time, total interest paid, and the impact of adding extra monthly payments in Canadian dollars.
+        </div>
+      </section>
+    </div>
+
+    <!-- SEO text block -->
+    <section class="card">
+      <h2>About this Canadian loan & debt payoff calculator</h2>
+      <p class="seo">
+        The Wealth Wizard Canada loan and debt payoff calculator helps you model how long it might take to pay
+        off common Canadian debts such as credit cards, car loans, personal loans, lines of credit, and more.
+        It uses your current balance, interest rate, and monthly payment to estimate a payoff timeline and total
+        interest paid in Canadian dollars.
+      </p>
+      <p class="seo">
+        This tool uses a simple month-by-month amortization approach and assumes a fixed interest rate and fixed
+        monthly payments based on what you enter. Real-world results can differ if interest rates change, fees
+        are added, or payments vary. It does not factor in provincial laws, minimum payment rules, or income tax.
+        Treat the results as educational estimates rather than exact figures, and consider speaking with a
+        licensed financial professional or non-profit credit counselling agency in your province or territory
+        for personalized advice.
+      </p>
+    </section>
+  </div>
+
+  <script>
+    function formatCurrency(value) {
+      if (isNaN(value)) return "$0";
+      return value.toLocaleString("en-CA", {
+        style: "currency",
+        currency: "CAD",
+        maximumFractionDigits: 0
+      });
+    }
+
+    function computeLoanStats(balance, annualRate, monthlyPayment, maxMonths = 1200) {
+      const result = {
+        ok: true,
+        message: "",
+        months: 0,
+        totalInterest: 0,
+        totalPaid: 0
+      };
+
+      let B = balance || 0;
+      const r = annualRate > 0 ? (annualRate / 100) / 12 : 0;
+      const P = monthlyPayment || 0;
+
+      if (B <= 0) {
+        result.ok = false;
+        result.message = "Balance must be greater than 0.";
+        return result;
+      }
+
+      if (P <= 0) {
+        result.ok = false;
+        result.message = "Monthly payment must be greater than 0.";
+        return result;
+      }
+
+      if (r > 0 && P <= B * r) {
+        result.ok = false;
+        result.message = "Monthly payment is too low to reduce the balance. Increase your payment.";
+        return result;
+      }
+
+      let months = 0;
+      let totalInterest = 0;
+
+      if (r === 0) {
+        // No interest: simple division
+        months = Math.ceil(B / P);
+        totalInterest = 0;
+      } else {
+        while (B > 0 && months < maxMonths) {
+          const interest = B * r;
+          let principalPayment = P - interest;
+          if (principalPayment <= 0) {
+            result.ok = false;
+            result.message = "Monthly payment is not enough to cover interest. Increase your payment.";
+            return result;
+          }
+          if (principalPayment > B) principalPayment = B;
+
+          B -= principalPayment;
+          totalInterest += interest;
+          months++;
+        }
+
+        if (months >= maxMonths && B > 0.01) {
+          result.ok = false;
+          result.message = "Payoff period is very long or payment too low. Try a higher payment.";
+          return result;
+        }
+      }
+
+      result.months = months;
+      result.totalInterest = totalInterest;
+      result.totalPaid = months * P;
+
+      return result;
+    }
+
+    function formatYearsMonths(months) {
+      const years = Math.floor(months / 12);
+      const remMonths = months % 12;
+      let parts = [];
+      if (years > 0) parts.push(years + (years === 1 ? " year" : " years"));
+      if (remMonths > 0) parts.push(remMonths + (remMonths === 1 ? " month" : " months"));
+      if (parts.length === 0) return "Less than 1 month";
+      return parts.join(" ");
+    }
+
+    function formatPayoffDate(months) {
+      const now = new Date();
+      const payoff = new Date(now.getFullYear(), now.getMonth() + months, now.getDate());
+      const options = { year: "numeric", month: "short" };
+      return payoff.toLocaleDateString("en-CA", options);
+    }
+
+    document.getElementById("calculateBtn").addEventListener("click", function () {
+      const province = document.getElementById("province").value;
+      const loanType = document.getElementById("loanType").value;
+
+      const balance = parseFloat(document.getElementById("balance").value);
+      const annualRate = parseFloat(document.getElementById("annualRate").value);
+      const monthlyPayment = parseFloat(document.getElementById("monthlyPayment").value);
+      const extraPayment = parseFloat(document.getElementById("extraPayment").value) || 0;
+
+      const errorEl = document.getElementById("error");
+      const resultsEl = document.getElementById("results");
+      const placeholderEl = document.getElementById("placeholderText");
+
+      errorEl.textContent = "";
+      resultsEl.classList.remove("visible");
+
+      if (
+        isNaN(balance) ||
+        isNaN(annualRate) ||
+        isNaN(monthlyPayment)
+      ) {
+        errorEl.textContent = "Please fill in balance, interest rate, and monthly payment with valid numbers.";
+        return;
+      }
+
+      const totalMonthly = monthlyPayment + extraPayment;
+
+      // Main scenario: with extra payments (if any)
+      const stats = computeLoanStats(balance, annualRate, totalMonthly);
+
+      if (!stats.ok) {
+        errorEl.textContent = stats.message;
+        return;
+      }
+
+      // Baseline scenario: without extra payments, only if extra > 0
+      let baseline = null;
+      if (extraPayment > 0) {
+        baseline = computeLoanStats(balance, annualRate, monthlyPayment);
+        if (!baseline.ok) {
+          // If baseline can't be computed, ignore extra comparison
+          baseline = null;
+        }
+      }
+
+      const months = stats.months;
+      const totalInterest = stats.totalInterest;
+      const totalPaid = stats.totalPaid;
+
+      const timeString = formatYearsMonths(months);
+      const payoffDateStr = formatPayoffDate(months);
+
+      const interestPercent = (totalInterest / balance) * 100;
+
+      // Populate UI
+      document.getElementById("provinceSummary").textContent = province;
+      document.getElementById("loanTypeSummary").textContent = loanType;
+
+      document.getElementById("timeToPayoff").textContent = timeString;
+      document.getElementById("numPayments").textContent =
+        months + " monthly payment" + (months === 1 ? "" : "s");
+
+      document.getElementById("payoffDate").textContent = payoffDateStr;
+
+      document.getElementById("totalPaid").textContent = formatCurrency(totalPaid);
+      document.getElementById("totalInterest").textContent = formatCurrency(totalInterest);
+
+      document.getElementById("principalVsInterest").textContent =
+        "On a starting balance of " + formatCurrency(balance) +
+        ", this includes " + formatCurrency(totalInterest) + " in interest.";
+
+      document.getElementById("interestPercent").textContent =
+        "Roughly " + interestPercent.toFixed(1) + "% of what you repay is interest.";
+
+      // Extra payments summary
+      let extraSummary = "No extra monthly payment entered.";
+      let extraDetail = "Enter an extra monthly amount to see how much faster you could be debt-free.";
+
+      if (baseline && extraPayment > 0) {
+        const monthsSaved = baseline.months - stats.months;
+        const interestSaved = baseline.totalInterest - stats.totalInterest;
+
+        if (monthsSaved > 0 && interestSaved > 0) {
+          extraSummary =
+            "Extra payments of " + formatCurrency(extraPayment) +
+            "/month could save you " + formatCurrency(interestSaved) +
+            " in interest.";
+          extraDetail =
+            "You would become debt-free about " +
+            formatYearsMonths(monthsSaved) +
+            " sooner compared to paying " +
+            formatCurrency(monthlyPayment) +
+            " per month with no extra payments.";
+        } else {
+          extraSummary =
+            "Extra payments are small relative to the loan size and interest rate.";
+          extraDetail =
+            "Try increasing your extra monthly payment to see a bigger impact on time and interest saved.";
+        }
+      }
+
+      document.getElementById("extraSummary").textContent = extraSummary;
+      document.getElementById("extraDetail").textContent = extraDetail;
+
+      // Show results
+      placeholderEl.style.display = "none";
+      resultsEl.classList.add("visible");
+    });
+  </script>
+</body>
+</html>
